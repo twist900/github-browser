@@ -9,29 +9,36 @@ import {
   AppRegistry,
   Text,
   View,
-  ActivityIndicatorIOS,
+  ActivityIndicator,
   StyleSheet
 } from 'react-native';
 import Login from './Login';
-// import AuthService from './AuthService';
+import AuthService from './AuthService';
+import AppContainer from './AppContainer';
 
 class GithubBrowser extends React.Component {
   constructor(props){
     super(props);
 
     this.state = {
-      checkingAuth: false,
+      checkingAuth: true,
       isLoggedIn: false
     }
   }
 
   componentDidMount(){
-    // AuthService.getAuthInfo((err, authInfo) => {
-    //   this.setState({
-    //     checkingAuth: false,
-    //     isLoggedIn: authInfo != null
-    //   });
-    // })
+    AuthService.getAuthInfo((err, authInfo) => {
+      this.setState({
+        checkingAuth: false,
+        isLoggedIn: authInfo != null
+      });
+    })
+  }
+
+  onLogin(){
+    this.setState({
+      isLoggedIn: true
+    });
   }
 
 
@@ -39,7 +46,7 @@ class GithubBrowser extends React.Component {
     if(this.state.checkingAuth){
       return (
         <View style={styles.container}>
-          <ActivityIndicatorIOS
+          <ActivityIndicator
             animating={true}
             size="large"
             style={styles.loader}
@@ -47,9 +54,12 @@ class GithubBrowser extends React.Component {
         </View>
         );
     }
-    return (
-      <Login />
-    );
+    if(this.state.isLoggedIn){
+      return <AppContainer />
+    } else {
+      return <Login onLogin={this.onLogin.bind(this)}/>
+    }
+
   }
 }
 

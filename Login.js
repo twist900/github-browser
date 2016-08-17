@@ -6,7 +6,7 @@ import {
   TextInput,
   TouchableHighlight,
   Image,
-  ActivityIndicatorIOS,
+  ActivityIndicator,
   View
 } from 'react-native';
 
@@ -40,6 +40,19 @@ class Login extends React.Component
   }
 
   render(){
+    var errorCtrl = <View />
+
+    if(!this.state.success && this.state.badCredentials){
+      errorCtrl = <Text style={styles.error}>
+        That username and password combination did not work
+      </Text>
+    }
+
+    if(!this.state.success && this.state.unknownError){
+      errorCtrl = <Text style={styles.error}>
+        We experienced an unexpected issue
+      </Text>
+    }
     return (
       <View style={styles.container}>
         <Image style={styles.logo} source={require('./img/Octocat.png')} />
@@ -64,7 +77,9 @@ class Login extends React.Component
           <Text style={styles.buttonText}>Log in</Text>
         </TouchableHighlight>
 
-        <ActivityIndicatorIOS
+        { errorCtrl }
+
+        <ActivityIndicator
           animating={this.state.showProgress}
           style={styles.loader}
           size="large"
@@ -118,6 +133,10 @@ var styles=StyleSheet.create({
   },
   loader: {
     marginTop: 20
+  },
+  error: {
+    color: 'red',
+    paddingTop: 10
   }
 });
 
