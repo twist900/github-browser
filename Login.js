@@ -24,6 +24,18 @@ class Login extends React.Component
     console.log("attempting to login with username " + this.state.username);
     this.setState({showProgress: true});
 
+    let authService = require('./AuthService');
+    authService.login({
+      username: this.state.username,
+      password: this.state.password
+    }, (results) => {
+      this.setState(Object.assign({showProgress: false}, results));
+
+      console.log(results);
+      if(results.success && this.props.onLogin){
+        this.props.onLogin();
+      }
+    })
 
   }
 
