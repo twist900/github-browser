@@ -127,7 +127,7 @@ export default class Feed extends React.Component{
 
     return(
       <View
-        style={{flex: 1, justifyContent: 'flex-start'}}
+        style={{flex: 1, justifyContent: 'flex-start', paddingTop: 60}}
       >
         <ListView
           dataSource={this.state.dataSource}
